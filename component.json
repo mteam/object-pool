@@ -1,0 +1,9 @@
+{
+  "name": "object-pool",
+  "repo": "mteam/object-pool",
+  "development": {
+    "visionmedia/mocha": "*",
+    "component/assert": "*"
+  },
+  "scripts": ["index.js"]
+}

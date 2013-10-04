@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <title>Container sorter tests</title>
+  <link rel="stylesheet" href="build/build.css">
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script src="build/build.js"></script>
+  <script>
+    require('mocha');
+    mocha.setup('bdd');
+  </script>
+
+  <script>
+    var assert = require('assert');
+    var Pool = require('object-pool');
+
+    describe('Object pool', function() {
+
+      function Foo(n) {
+        this.n = n;
+      }
+
+      Foo.prototype.inc = function() {
+        this.n++;
+      };
+      
+      it('returns objects', function() {
+        var pool = new Pool(Foo);
+
+        var f1 = pool.create(1);
+        var f2 = pool.create(2);
+
+        f1.inc();
+        f2.inc();
+
+        assert(f1.n == 2);
+        assert(f2.n == 3);
+      });
+
+      it('reuses objects', function() {
+        var pool = new Pool(Foo);
+
+        var f1 = pool.create(1);
+        var f2 = pool.create(2);
+
+        pool.free(f1);
+        f1 = null;
+
+        var f3 = pool.create(3);
+
+        assert(f3.n == 3);
+      });
+    
+    });
+
+    mocha.run();
+  </script>
+</body>
+</html>
